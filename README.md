@@ -1,31 +1,35 @@
-# ASUS ROG Strix laptop keyboard (SignalRGB add-on)
+# ASUS ROG Strix laptop keyboard (SignalRGB)
 
-[![Add To Installation](https://marketplace.signalrgb.com/resources/add-extension-256.png 'Add to My SignalRGB Installation')](signalrgb://addon/install?url=https://github.com/fverdin80/signalrgb-asus-strix-laptop)
+Plugin de SignalRGB para el teclado de la laptop ASUS ROG Strix (USB `0B05:19B6`), más una copia del plugin
+oficial `ASUS_Multidevice_Controller.js` **sin** la entrada `0x19B6`, para que no le quite el teclado.
 
-Plugin de SignalRGB para el teclado de la laptop ASUS ROG Strix (USB `0B05:19B6`).
+## El problema
+El plugin oficial `ASUS_Multidevice_Controller.js` (que no funciona con este teclado) también declara `0x19B6`.
+SignalRGB lo **descarga en cada arranque** a
+`%LOCALAPPDATA%\WhirlwindFX\SignalRgb\cache\plugin_cdn\main\Plugins\Asus\`, así que borrarlo de la carpeta de la
+app no sirve: vuelve y se queda con el teclado.
 
-Se instala como **Add-on** a propósito: SignalRGB carga los plugins en este orden
-(el último gana para el mismo VID:PID):
+Orden en que SignalRGB carga los plugins (para el mismo nombre de archivo gana el último):
 
 1. carpeta de la app (`%LOCALAPPDATA%\VortxEngine\app-x.y.z\Signal-x64\Plugins`)
-2. plugins oficiales descargados (`%LOCALAPPDATA%\WhirlwindFX\SignalRgb\cache\plugin_cdn`)
-3. **Add-ons** (`%LOCALAPPDATA%\WhirlwindFX\SignalRgb\cache\addons`)
+2. Add-ons (`%LOCALAPPDATA%\WhirlwindFX\SignalRgb\cache\addons`)
+3. plugins oficiales descargados (`...\cache\plugin_cdn`)
+4. **carpeta de usuario `Plugins`** ← gana
 
-El plugin oficial `ASUS_Multidevice_Controller.js` (que no funciona con este teclado) declara el mismo
-`0x19B6` y se vuelve a descargar en cada arranque, así que borrarlo de la carpeta de la app no sirve.
-Como Add-on, este plugin se carga al final y se queda con el teclado.
+## Instalación (la que funciona)
+Copiar `Asus_Strix_Laptop.js` y `ASUS_Multidevice_Controller.js` a la carpeta **Plugins** de la carpeta de
+usuario de SignalRGB, y reiniciar SignalRGB.
 
-## Instalar
-Clic en el botón de arriba (o abrir `signalrgb://addon/install?url=https://github.com/fverdin80/signalrgb-asus-strix-laptop`)
-y aceptar en SignalRGB.
+- La carpeta de usuario está en el registro: `HKCU\Software\WhirlwindFX\SignalRgb` → `UserDirectory`.
+  En la ROG es `C:\Users\ferna\OneDrive\ENTN\Fotos de página principal\Documentos2\WhirlwindFX\Plugins`.
+- En el registro de SignalRGB debe salir `Custom Plugin File Loaded for Path: …/Plugins/Asus_Strix_Laptop.js`,
+  y en Devices → ROG Strix → Inspector: `plugin Asus_Strix_Laptop.js`, `origin User`.
 
-Basado en el plugin "ROG Strix Scar (2022)" de WhirlwindFX.
+Como Add-on **no** basta: los plugins descargados del CDN le ganan a los Add-ons.
 
-## ASUS_Multidevice_Controller.js (copia modificada)
-El plugin oficial se procesa después de este y se queda con `0x19B6`. Para evitarlo, este Add-on incluye una
-copia del oficial **con el mismo nombre** (los Add-ons sustituyen archivos con el mismo nombre) y **sin** la
-entrada `0x19B6: "Aura device"`. Todo lo demás es idéntico a la versión del CDN del 22 oct 2026.
+## Mantenimiento
+La copia de `ASUS_Multidevice_Controller.js` no se actualiza sola (es la del CDN del 22 oct 2026). Si algún
+otro aparato ASUS lo necesita actualizado: copiar el del CDN, quitar la línea `0x19B6: "Aura device",` y
+reemplazarlo en la carpeta Plugins de usuario.
 
-Contra: esa copia ya no se actualiza sola. Para actualizarla, copiar de nuevo
-`%LOCALAPPDATA%\WhirlwindFX\SignalRgb\cache\plugin_cdn\main\Plugins\Asus\ASUS_Multidevice_Controller.js`,
-quitar la línea `0x19B6: "Aura device",` y hacer push.
+Basado en el plugin "ROG Strix Scar (2022)" y en `ASUS_Multidevice_Controller.js`, ambos de WhirlwindFX.
