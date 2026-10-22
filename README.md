@@ -20,3 +20,12 @@ Clic en el botón de arriba (o abrir `signalrgb://addon/install?url=https://gith
 y aceptar en SignalRGB.
 
 Basado en el plugin "ROG Strix Scar (2022)" de WhirlwindFX.
+
+## ASUS_Multidevice_Controller.js (copia modificada)
+El plugin oficial se procesa después de este y se queda con `0x19B6`. Para evitarlo, este Add-on incluye una
+copia del oficial **con el mismo nombre** (los Add-ons sustituyen archivos con el mismo nombre) y **sin** la
+entrada `0x19B6: "Aura device"`. Todo lo demás es idéntico a la versión del CDN del 22 oct 2026.
+
+Contra: esa copia ya no se actualiza sola. Para actualizarla, copiar de nuevo
+`%LOCALAPPDATA%\WhirlwindFX\SignalRgb\cache\plugin_cdn\main\Plugins\Asus\ASUS_Multidevice_Controller.js`,
+quitar la línea `0x19B6: "Aura device",` y hacer push.
